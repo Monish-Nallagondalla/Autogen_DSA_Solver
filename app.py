@@ -27,3 +27,30 @@ async def run(team, task, docker):
         print(f"An error occurred: {e}")
     finally:
         await stop_docker_executor(docker)
+
+
+
+
+if st.button("Solve"):
+    st.write('Solving your question...')
+
+    
+    task = task
+
+    async def collect_messages():
+        team,docker = await get_team_and_docker()
+        async for msg in run(team, task, docker):
+            # if isinstance(msg, str):
+            if msg.startswith('user'):
+                with st.chat_message('user',avatar='👤'):
+                    st.markdown(msg)
+            elif msg.startswith('ProblemSolverExpert'):
+                with st.chat_message('ProblemSolverExpert',avatar='🧑🏻‍💻') :
+                    st.markdown(msg)
+            elif msg.startswith('CodeExecutorAgent'):
+                with st.chat_message('CodeExecutorAgent',avatar='🤖'):
+                    st.markdown(msg)
+            else:
+                st.markdown(msg)
+
+    asyncio.run(collect_messages())
