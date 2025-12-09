@@ -17,38 +17,3 @@ async def get_team_and_docker():
 
     team = get_team(problem_solver_agent, code_executor_agent)
     return team, docker
-
-async def run_team(team,task,docker):
-
-    try:
-        await start_docker_executor(docker)
-
-
-        async for message in team.run_stream(task = task):
-            print('='*50)
-            if isinstance(message, TextMessage):
-                print(msg:= f" {message.source}: {message.content}")
-                # yield msg
-            elif isinstance(message, TaskResult):
-                print(msg:=f'Task Result: {message.result}')
-                # yield msg
-            print('='*50)
-
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-    finally:
-        await stop_docker_executor(docker)
-
-async def main():
-    team,docker = await get_team_and_docker()
-    task = 'Write a Python Code to add 2 numbers'
-
-    await run_team(team, task, docker)
-    
-
-
-if __name__ == "__main__":
-    # Run the main function using asyncio
-    asyncio.run(main())
