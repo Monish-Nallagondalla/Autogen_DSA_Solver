@@ -8,12 +8,4 @@ from autogen_agentchat.messages import TextMessage
 from autogen_agentchat.base import TaskResult
 
 
-async def get_team_and_docker():
 
-    docker = get_docker_executor()
-    model_client = get_model_client()
-    problem_solver_agent = get_problem_solver_expert(model_client)
-    code_executor_agent = get_code_executor_agent(docker)
-
-    team = get_team(problem_solver_agent, code_executor_agent)
-    return team, docker
